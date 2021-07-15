@@ -99,10 +99,9 @@ var Configurator = React.createClass({
         }
         const isOpenEsc = availableMetainfo[0] && availableMetainfo[0].interfaceMode === _4way_modes.ARMBLB;
 
-        // todo: always bluejay for now
-        const isBluejay = !isOpenEsc;
-
         const availableSettings = this.state.escSettings.filter((i, idx) => this.state.escMetainfo[idx].available);
+
+        const isBluejay = !isOpenEsc && availableSettings.every(settings => BLUEJAY_SETTINGS_DESCRIPTIONS[settings.LAYOUT_REVISION] != null);
 
         // Enable `Flash All` if all ESCs are identical
         const canFlash = isOpenEsc ? availableSettings.every(settings => settings.LAYOUT_REVISION === availableSettings[0].LAYOUT_REVISION) : availableSettings.every(settings => settings.LAYOUT === availableSettings[0].LAYOUT);
