@@ -1,6 +1,25 @@
 'use strict';
 
 var BLUEJAY_DEFAULTS = {
+	'204': { //  203 with BRAKING_STRENGTH
+		RPM_POWER_SLOPE:            9,
+		MOTOR_DIRECTION:            1,
+		COMMUTATION_TIMING:         4,
+		BEEP_STRENGTH:              40,
+		BEACON_STRENGTH:            80,
+		BEACON_DELAY:               4,
+		DEMAG_COMPENSATION:         2,
+		TEMPERATURE_PROTECTION:     7,
+		BRAKE_ON_STOP:              0,
+		LED_CONTROL:                0,
+
+		STARTUP_POWER_MIN:          51,
+		DITHERING:                  1,
+
+		STARTUP_POWER_MAX:          25,
+		BRAKING_STRENGTH:           255,
+		STARTUP_MELODY:             [2,58,4,32,52,66,13,0,69,45,13,0,52,66,13,0,78,39,211,0,69,45,208,25,52,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+	},
 	'203': { //  201 with STARTUP_MELODY
 		RPM_POWER_SLOPE:            9,
 		MOTOR_DIRECTION:            1,
@@ -36,7 +55,7 @@ var BLUEJAY_DEFAULTS = {
 		DITHERING:                  1,
 
 		STARTUP_POWER_MAX:          25,
-		DAMPING_MODE:               2,
+		BRAKING_STRENGTH:           2, // Backward: DAMPING_MODE
 	},
 	'201': { // v0.10
 		RPM_POWER_SLOPE:            9,
