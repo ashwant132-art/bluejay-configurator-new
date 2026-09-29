@@ -1,0 +1,68 @@
+<div class="tab-bluejay-flash">
+    <div class="content_wrapper">
+        <div class="content_top">
+            <div class="logowrapper" align="center">
+                <div class="title">Bluejay Flash — download, check, flash (later)</div>
+                <div class="subtitle">Download the right hex, auto-detect your ESC layout, run pre-flight checks. Actual ESC flashing gets wired up after we agree the tool path.</div>
+            </div>
+        </div>
+        <div class="content_mid">
+            <div class="column third_left">
+                <div class="wrap">
+                    <h2>1. Download Bluejay hex</h2>
+                    <label>Version
+                        <div class="dropdown dropdown-dark"><select id="bj-version" class="dropdown-select"></select></div>
+                    </label>
+                    <label>Layout (ESC target)
+                        <div class="dropdown dropdown-dark"><select id="bj-layout" class="dropdown-select"></select></div>
+                    </label>
+                    <label>Filename suffix (e.g. 24, 48, 96 — blank if unsure)
+                        <input id="bj-suffix" type="text" value="" placeholder="24" />
+                    </label>
+                    <div class="btn-row">
+                        <a href="#" id="bj-download" class="regular-button">Load Firmware (Online)</a>
+                        <a href="#" id="bj-copy" class="regular-button">Copy URL</a>
+                    </div>
+                    <textarea id="bj-url" rows="3" readonly></textarea>
+                    <div id="bj-loaded" class="note">No firmware loaded yet.</div>
+                    <div class="note small">URLs come from shipped <code>js/bluejay_versions.json</code> (bird-sanctuary releases, latest first) + layouts in <code>js/bluejay_escs.json</code>. Load pulls the hex into the app — flashing comes later.</div>
+                </div>
+            </div>
+            <div class="column third_center">
+                <div class="wrap">
+                    <h2>2. Auto-detect ESC layout</h2>
+                    <div class="btn-row">
+                        <a href="#" id="bj-detect" class="regular-button">Detect layout</a>
+                    </div>
+                    <div id="bj-detect-out" class="note">Requires a connection (FC passthrough or interface box). Reads LAYOUT / MCU / NAME from ESC EEPROM.</div>
+                </div>
+            </div>
+            <div class="column third_right">
+                <div class="wrap">
+                    <h2>3. Flash tool setup</h2>
+                    <label><input type="radio" name="bj-tool" value="builtin" checked /> Built-in 4-way path (FC passthrough / Arduino box) — recommended</label>
+                    <label><input type="radio" name="bj-tool" value="toolstick" /> External ToolStick vendor tool (C2 direct, manual for now)</label>
+                    <div id="bj-tool-note" class="note"></div>
+                    <div class="btn-row">
+                        <a href="#" id="bj-flash" class="regular-button disabled">Flash ESC (later)</a>
+                    </div>
+                    <div class="note small">Flashing executes here once we lock the tool path. avrdude in <code>interfaces/avrdude/</code> is Arduino-box only, never the ESC.</div>
+                </div>
+            </div>
+        </div>
+        <div class="content_mid">
+            <div class="column full">
+                <div class="wrap">
+                    <h2>Pre-flight checks (read-only)</h2>
+                    <div class="btn-row">
+                        <a href="#" id="bj-checks" class="regular-button">Run all checks</a>
+                    </div>
+                    <table class="bj-table" id="bj-checks-table">
+                        <thead><tr><th>Check</th><th>Result</th><th>Detail</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

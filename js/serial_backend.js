@@ -157,6 +157,40 @@ function onOpen(openInfo) {
             return;
         }
 
+        // Route by selected interface (Select Interface tab): FC passthrough
+        // keeps the MSP handshake, every direct box speaks 4-way straight
+        // away so all features work on all interfaces.
+        chrome.storage.local.get('selectedInterface', function (data) {
+            var sel = data && data.selectedInterface;
+            var id = sel && sel.id;
+
+            if (!id || id === 'fc-passthrough') {
+                connectViaFcPassthrough();
+                return;
+            }
+
+            if (id === 'toolstick-c2') {
+                GUI.log('ToolStick C2 needs its vendor software — see the wiring docs in the pack. Disconnecting.');
+                GUI.timeout_add('disconnecting', function() {
+                    $('a.connect').click(); // disconnect
+                }, 500);
+                return;
+            }
+
+            connectViaDirectBox(id);
+        });
+
+        function connectViaDirectBox(id) {
+            GUI.log('Direct interface <code>' + id + '</code> — skipping FC handshake, talking 4-way.');
+            _4way.testAlive().then(function () {
+                GUI.log('Interface box answered.');
+                initialized4Way();
+            }).catch(function (err) {
+                GUI.log('Interface box did not answer: <span style="color: red">' + err.message + '</span>. Check COM, baud and box firmware (Make Interfaces tab).');
+            });
+        }
+
+        function connectViaFcPassthrough() {
         // request configuration data
         MSP.send_message(MSP_codes.MSP_API_VERSION, false, false, function () {
             GUI.log(chrome.i18n.getMessage('apiVersionReceived', [CONFIG.apiVersion]));
@@ -193,6 +227,7 @@ function onOpen(openInfo) {
                 GUI.log(chrome.i18n.getMessage('firmwareVersionNotSupported', [CONFIGURATOR.apiVersionAccepted]));
             }
         });
+        }
     } else {
         console.log('Failed to open serial port');
         GUI.log(chrome.i18n.getMessage('serialPortOpenFail'));

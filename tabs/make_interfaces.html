@@ -1,0 +1,90 @@
+<div class="tab-make-interfaces">
+    <div class="content_wrapper">
+        <div class="content_top">
+            <div class="logowrapper" align="center">
+                <div class="title">Make Interfaces</div>
+                <div class="subtitle">Flashes <strong>Arduino interface boxes only</strong> (4w-if / USB-Linker / 1-Wire). ESC flashing lives in the Bluejay Flash tab.</div>
+            </div>
+        </div>
+        <div class="content_mid">
+            <div class="column third_left">
+                <div class="wrap">
+                    <h2>1. Interface firmware</h2>
+                    <label>Function
+                        <div class="dropdown dropdown-dark"><select id="mi-family" class="dropdown-select">
+                            <option value="arduino-4w-if">Arduino 4w-if (4-way box)</option>
+                            <option value="arduino-usb-linker">Arduino USB-Linker (1-wire single ESC)</option>
+                            <option value="arduino-1wire">Arduino 1-Wire (legacy)</option>
+                        </select></div>
+                    </label>
+                    <label>Board (all supported boards)
+                        <div class="dropdown dropdown-dark"><select id="mi-board" class="dropdown-select"></select></div>
+                    </label>
+                    <label>Hex file (filtered by board)
+                        <div class="dropdown dropdown-dark"><select id="mi-hex" class="dropdown-select"></select></div>
+                    </label>
+                    <div id="mi-family-desc" class="note"></div>
+                    <div class="note small"><span id="mi-hex-count"></span> files in <span id="mi-dir"></span>. BLHeli boxes excluded.</div>
+                </div>
+            </div>
+            <div class="column third_center">
+                <div class="wrap">
+                    <h2>2. Flash the Arduino</h2>
+                    <label>COM port
+                        <div class="dropdown dropdown-dark"><select id="mi-port" class="dropdown-select"></select></div>
+                    </label>
+                    <label>Baud rate
+                        <div class="dropdown dropdown-dark"><select id="mi-baud" class="dropdown-select"></select></div>
+                    </label>
+                    <div class="btn-row">
+                        <a href="#" id="mi-flash" class="regular-button">Flash</a>
+                        <a href="#" id="mi-copy-cmd" class="regular-button">Copy cmd</a>
+                        <a href="#" id="mi-save-bat" class="regular-button">Save .bat</a>
+                    </div>
+                    <textarea id="mi-cmd" rows="4" readonly></textarea>
+                    <div id="mi-flash-log" class="note"></div>
+                    <ol class="steps">
+                        <li>Disconnect the configurator first (button up top).</li>
+                        <li>Press Flash — runs bundled <code>interfaces/avrdude/avrdude.exe</code>. Same args as the classic <code>AvrDude_Make_ISP_*.bat</code> lines.</li>
+                        <li>If Flash can't spawn (browser-mode), copy the cmd or save the .bat and run it from <code>interfaces/avrdude/</code>.</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="column third_right">
+                <div class="wrap">
+                    <h2>3. SiLabs quick wiring</h2>
+                    <label>SiLabs interface
+                        <div class="dropdown dropdown-dark"><select id="mi-silabs" class="dropdown-select"></select></div>
+                    </label>
+                    <div id="mi-silabs-detail"></div>
+                    <div class="note small">Full picker lives in the <strong>Select Interface</strong> tab.</div>
+                </div>
+            </div>
+        </div>
+        <div class="content_mid">
+            <div class="column third_left">
+                <div class="wrap">
+                    <h2>Bluejay hex + ESC flashing</h2>
+                    <div class="note">Downloading, layout checks and ESC flashing live in the <strong>Bluejay Flash</strong> tab.</div>
+                </div>
+            </div>
+            <div class="column third_center">
+                <div class="wrap">
+                    <h2>Pinout quick reference</h2>
+                    <table class="mi-table" id="mi-pinout-table">
+                        <thead><tr><th>Variant / signal</th><th>Meaning</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="column third_right">
+                <div class="wrap">
+                    <h2>Docs + reference image</h2>
+                    <ul id="mi-docs"></ul>
+                    <div id="mi-shot"></div>
+                    <div class="note small">Props off. 1-wire: ESC on battery/BEC. C2: check C2D/C2CK order. PDFs in <code>interfaces/docs-silabs/</code>.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

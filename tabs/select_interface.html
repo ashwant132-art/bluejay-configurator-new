@@ -1,0 +1,49 @@
+<div class="tab-select-interface">
+    <div class="content_wrapper">
+        <div class="content_top">
+            <div class="logowrapper" align="center">
+                <div class="title">Select Interface</div>
+                <div class="subtitle">Pick how this configurator talks SiLabs. FC passthrough is the default; direct C2 / 1-wire boxes come from the Make Interfaces tab.</div>
+            </div>
+        </div>
+        <div class="content_mid">
+            <div class="column third_left">
+                <div class="wrap">
+                    <h2>1. Interface (SiLabs)</h2>
+                    <label>Interface
+                        <div class="dropdown dropdown-dark"><select id="si-iface" class="dropdown-select"></select></div>
+                    </label>
+                    <div id="si-detail"></div>
+                </div>
+            </div>
+            <div class="column third_center">
+                <div class="wrap">
+                    <h2>2. Port + baud</h2>
+                    <label>COM port
+                        <div class="dropdown dropdown-dark"><select id="si-port" class="dropdown-select"></select></div>
+                    </label>
+                    <label>Baud rate
+                        <div class="dropdown dropdown-dark"><select id="si-baud" class="dropdown-select"></select></div>
+                    </label>
+                    <div class="btn-row">
+                        <a href="#" id="si-use" class="regular-button">Use this interface</a>
+                        <a href="#" id="si-refresh" class="regular-button">Refresh ports</a>
+                    </div>
+                    <div id="si-status" class="note"></div>
+                    <ol class="steps">
+                        <li>FC passthrough: connect normally up top (115200 to the FC).</li>
+                        <li>Arduino/USB-UART box: pick its COM here, match the baud shown, then Connect up top to that COM.</li>
+                        <li>ToolStick C2: vendor tool path — wiring doc only for now.</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="column third_right">
+                <div class="wrap">
+                    <h2>3. Wiring</h2>
+                    <div id="si-wiring"></div>
+                    <div class="note small">Exact diagrams: <code>interfaces/docs-silabs/BLHeliSuite 4w-if interfaces pinout.pdf</code>. Props off.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

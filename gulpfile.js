@@ -160,6 +160,9 @@ function do_dist() {
         './js/libraries/jquery.nouislider.pips.min.css',
         './tabs/landing.css',
         './tabs/esc.css',
+        './tabs/make_interfaces.css',
+        './tabs/select_interface.css',
+        './tabs/bluejay_flash.css',
         './css/opensans_webfontkit/fonts.css',
         './css/dropdown-lists/css/style_lists.css',
         './js/libraries/switchery/switchery.css',
@@ -215,11 +218,15 @@ function do_dist() {
         './js/open_esc_eeprom_layout.js',
         './js/open_esc_settings_description.js',
         './js/fetch_json.js',
+        './js/make_interfaces_data.js',
         // Configurator components
         './js/build/*.js',
         // Tabs
         './main.js',
         './tabs/landing.js',
+        './tabs/make_interfaces.js',
+        './tabs/select_interface.js',
+        './tabs/bluejay_flash.js',
 
         // everything else
         './settings.json',
@@ -229,6 +236,7 @@ function do_dist() {
         './eventPage.js',
         './*.html',
         './tabs/*.html',
+        './interfaces/**/*',
         './images/**/*',
         './_locales/**/*',
         './css/opensans_webfontkit/*.{eot,svg,ttf,woff,woff2}'
@@ -270,6 +278,7 @@ function do_apps(done) {
         buildDir: appsDir,
         platforms: platforms,
         flavor: 'normal',
+        downloadUrl: 'https://npmmirror.com/mirrors/nwjs/',
         macIcns: './images/icon_128.icns',
         macPlist: { 'CFBundleDisplayName': 'BLHeli Configurator'},
         winIco: './images/icon_128.ico',

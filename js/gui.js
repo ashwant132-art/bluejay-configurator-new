@@ -13,10 +13,16 @@ var GUI_control = function () {
     this.interval_array = [];
     this.timeout_array = [];
     this.defaultAllowedTabsWhenDisconnected = [
-        'landing'
+        'landing',
+        'make_interfaces',
+        'select_interface',
+        'bluejay_flash'
     ];
     this.defaultAllowedTabsWhenConnected = [
-        'esc'
+        'esc',
+        'make_interfaces',
+        'select_interface',
+        'bluejay_flash'
     ];
     this.allowedTabs = this.defaultAllowedTabsWhenDisconnected;
 

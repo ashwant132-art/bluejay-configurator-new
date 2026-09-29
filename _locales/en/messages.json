@@ -58,6 +58,15 @@
     "tabLanding": {
         "message": "Welcome"
     },
+    "tabMakeInterfaces": {
+        "message": "Make Interfaces"
+    },
+    "tabSelectInterface": {
+        "message": "Select Interface"
+    },
+    "tabBluejayFlash": {
+        "message": "Bluejay Flash"
+    },
     "tabESC": {
         "message": "ESC Programming"
     },

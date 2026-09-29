@@ -1,0 +1,135 @@
+.tab-bluejay-flash {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.tab-bluejay-flash .content_wrapper {
+    padding: 10px;
+}
+
+.tab-bluejay-flash .content_top .title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.tab-bluejay-flash .content_top .subtitle {
+    color: #666;
+    margin-top: 4px;
+}
+
+.tab-bluejay-flash .content_mid {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tab-bluejay-flash .column.third_left,
+.tab-bluejay-flash .column.third_center,
+.tab-bluejay-flash .column.third_right {
+    flex: 1;
+}
+
+.tab-bluejay-flash .column.full {
+    flex: 1;
+    width: 100%;
+}
+
+.tab-bluejay-flash .wrap {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    background: #fafafa;
+}
+
+.tab-bluejay-flash h2 {
+    font-size: 14px;
+    margin: 0 0 8px 0;
+}
+
+.tab-bluejay-flash label {
+    display: block;
+    margin: 8px 0;
+    font-weight: bold;
+}
+
+.tab-bluejay-flash select.dropdown-select,
+.tab-bluejay-flash input[type="text"] {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    box-sizing: border-box;
+}
+
+.tab-bluejay-flash textarea#bj-url {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: monospace;
+    margin-top: 8px;
+}
+
+.tab-bluejay-flash .btn-row {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.tab-bluejay-flash .regular-button {
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #000;
+    background: #e8e8e8;
+}
+
+.tab-bluejay-flash .regular-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tab-bluejay-flash table.bj-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.tab-bluejay-flash table.bj-table th,
+.tab-bluejay-flash table.bj-table td {
+    border: 1px solid #ccc;
+    padding: 4px 6px;
+    text-align: left;
+}
+
+.tab-bluejay-flash tr.bj-pass .bj-state {
+    color: green;
+    font-weight: bold;
+}
+
+.tab-bluejay-flash tr.bj-fail .bj-state {
+    color: red;
+    font-weight: bold;
+}
+
+.tab-bluejay-flash tr.bj-warn .bj-state {
+    color: #b58900;
+    font-weight: bold;
+}
+
+.tab-bluejay-flash tr.bj-skip .bj-state {
+    color: #999;
+}
+
+.tab-bluejay-flash .note {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.tab-bluejay-flash .note.small {
+    color: #666;
+}
+
+.tab-bluejay-flash code {
+    font-family: monospace;
+}

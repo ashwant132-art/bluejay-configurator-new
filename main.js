@@ -117,7 +117,7 @@ $(document).ready(function () {
 
     $('#status-bar .version').text(chrome.runtime.getManifest().version);
     $('#logo .version').text(chrome.runtime.getManifest().version);
-    $('.tab_container').hide();
+    $('.tab_container').show();
 
     // notification messages for various operating systems
     switch (GUI.operating_system) {
@@ -192,6 +192,15 @@ $(document).ready(function () {
                 switch (tab) {
                     case 'landing':
                         TABS.landing.initialize(content_ready);
+                        break;
+                    case 'make_interfaces':
+                        TABS.make_interfaces.initialize(content_ready);
+                        break;
+                    case 'select_interface':
+                        TABS.select_interface.initialize(content_ready);
+                        break;
+                    case 'bluejay_flash':
+                        TABS.bluejay_flash.initialize(content_ready);
                         break;
                     case 'esc':
                         if (!TABS.esc) {
