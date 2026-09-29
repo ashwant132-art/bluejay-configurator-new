@@ -134,7 +134,7 @@ var MAKE_INTERFACES = {
             suiteLabel: 'ToolStick / USB Debug Adapter (C2)',
             name: 'SiLabs ToolStick / USB Debug Adapter (C2)',
             escSignals: 'C2D + C2CK + GND (+ optional 5V)',
-            useFor: 'Direct C2 flash + recovery of EFM8BB10/BB21/BB51. No bootloader needed.',
+            useFor: 'Direct C2 access + recovery of EFM8BB10/BB21/BB51. No bootloader needed.',
             baud: 'n/a (USB debug)',
             docs: ['BLHeli programming adapters.pdf', 'BLHeli_S manual SiLabs Rev16.x.pdf']
         },
@@ -202,10 +202,6 @@ var MAKE_INTERFACES = {
         'How to Build a BLHeli bootloader interface with USB-UART board.pdf',
         'BLHeli programming adapters.pdf',
         'BLHeli_S manual SiLabs Rev16.x.pdf'
-    ],
-    screenshotsDir: 'interfaces/screenshots',
-    screenshotsFiles: [
-        'BLHeliSuiteSiLabs ESC Setup_260921_1.png'
     ],
 
     bluejayRepo: 'https://github.com/bird-sanctuary/bluejay',

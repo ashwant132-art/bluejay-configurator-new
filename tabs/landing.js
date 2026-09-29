@@ -13,9 +13,6 @@ TABS.landing.initialize = function (callback) {
         // translate to user-selected language
         localize();
 
-        // load changelog content
-        $('#changelog .log').load('./changelog.html');
-
         // Open links in external browser
         $('a[target=_blank]').click(function () {
             nw.Shell.openExternal(this.href);
@@ -24,23 +21,6 @@ TABS.landing.initialize = function (callback) {
 
         $('div.welcome a, div.sponsors a').click(function () {
             googleAnalytics.sendEvent('ExternalUrls', 'Click', $(this).prop('href'));
-        });
-
-        /** changelog trigger **/
-        $("#changelog_toggle").on('click', function() {
-            var state = $(this).data('state2');
-            if (state) {
-                $("#changelog").animate({right: -245}, 200, function () {
-                    $("#content").removeClass('log_open');
-                    });
-                state = false;
-            } else {
-                $("#changelog").animate({right: 0}, 200);
-                $("#content").addClass('log_open');
-                state = true;
-            }
-            $(this).text(state ? 'Close' : 'Changelog');
-            $(this).data('state2', state);
         });
 
         GUI.content_ready(callback);

@@ -68,26 +68,6 @@ var IndividualSettings = React.createClass({
             });
         }
 
-        rows.push(
-            <div className="half">
-                <div className="default_btn half flash_btn">
-                    <progress
-                        className={this.props.isFlashing ? "progress" : "hidden"}
-                        value={this.props.progress}
-                        min="0"
-                        max="100"
-                    />
-                    <a
-                        href="#"
-                        className={this.props.canFlash ? "" : "disabled"}
-                        onClick={this.flashFirmware}
-                    >
-                        {chrome.i18n.getMessage('escButtonFlash')}
-                    </a>
-                </div>
-            </div>
-        );
-
         return rows;
     },
     renderSetting: function(settings, desc) {
@@ -181,8 +161,5 @@ var IndividualSettings = React.createClass({
     },
     handlePlaybackStateChange: function(isPlaying) {
         this.props.onMusicPlaybackStateChanged(this.props.escIndex, isPlaying);
-    },
-    flashFirmware: function() {
-        this.props.onFlash(this.props.escIndex);
     }
 });

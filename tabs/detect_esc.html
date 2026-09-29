@@ -1,0 +1,48 @@
+<div class="tab-detect-esc">
+    <div class="content_wrapper">
+        <div class="content_top">
+            <div class="logowrapper" align="center">
+                <div class="title">Detect ESC Layout</div>
+                <div class="subtitle">Read LAYOUT / MCU / NAME straight off the ESC and run read-only pre-flight checks. Works on every interface.</div>
+            </div>
+        </div>
+        <div class="content_mid">
+            <div class="column third_left">
+                <div class="wrap">
+                    <h2>1. Auto-detect</h2>
+                    <div class="btn-row">
+                        <a href="#" id="de-detect" class="regular-button">Detect layout</a>
+                    </div>
+                    <div id="de-detect-out" class="note">Requires a connection (FC passthrough or interface box). Reads LAYOUT / MCU / NAME from ESC EEPROM.</div>
+                </div>
+            </div>
+            <div class="column third_center">
+                <div class="wrap">
+                    <h2>2. Pre-flight checks (read-only)</h2>
+                    <div class="btn-row">
+                        <a href="#" id="de-checks" class="regular-button">Run all checks</a>
+                    </div>
+                    <div class="note small">Link, EEPROM, layout revision, MCU/NAME, ESC layout, bootloader — nothing is written.</div>
+                </div>
+            </div>
+            <div class="column third_right">
+                <div class="wrap">
+                    <h2>3. Firmware notes</h2>
+                    <div class="note">Grab the hex for your layout in the browser for now:</div>
+                    <div class="note"><code>https://github.com/bird-sanctuary/bluejay/releases</code></div>
+                    <div class="note small">L layout (BB10) is deprecated upstream — last official release <code>0.18.1</code>.</div>
+                </div>
+            </div>
+        </div>
+        <div class="content_mid">
+            <div class="column full">
+                <div class="wrap">
+                    <table class="de-table" id="de-checks-table">
+                        <thead><tr><th>Check</th><th>Result</th><th>Detail</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 var pkg = require('./package.json');
 
@@ -162,7 +162,7 @@ function do_dist() {
         './tabs/esc.css',
         './tabs/make_interfaces.css',
         './tabs/select_interface.css',
-        './tabs/bluejay_flash.css',
+        './tabs/detect_esc.css',
         './css/opensans_webfontkit/fonts.css',
         './css/dropdown-lists/css/style_lists.css',
         './js/libraries/switchery/switchery.css',
@@ -226,7 +226,7 @@ function do_dist() {
         './tabs/landing.js',
         './tabs/make_interfaces.js',
         './tabs/select_interface.js',
-        './tabs/bluejay_flash.js',
+        './tabs/detect_esc.js',
 
         // everything else
         './settings.json',

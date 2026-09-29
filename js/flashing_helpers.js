@@ -28,64 +28,6 @@ function buf2ascii(buf) {
     return String.fromCharCode.apply(null, buf);
 }
 
-function parseHex(data) {
-    // parsing hex in different thread
-    var worker = new Worker('./js/workers/hex_parser.js'),
-        deferred = Q.defer();
-
-    worker.onmessage = function (event) {
-        return deferred.resolve(event.data);
-    };
-    // send data over for processing
-    worker.postMessage(data);
-
-    return deferred.promise;
-}
-
-function selectFile(ext) {
-    var deferred = Q.defer();
-
-    // Open file dialog
-    chrome.fileSystem.chooseEntry({
-        type: 'openFile',
-        accepts: [{ extensions: [ext] }]
-    }, function (fileEntry) {
-        if (chrome.runtime.lastError) {
-            deferred.reject(new Error(chrome.runtime.lastError.message));
-            return;
-        }
-
-        chrome.fileSystem.getDisplayPath(fileEntry, function (path) {
-            GUI.log('Loading file from ' + path);
-
-            fileEntry.file(function (file) {
-                var reader = new FileReader();
-
-                reader.onprogress = function (e) {
-//                    if (e.total > 32 * 1024) {
-//                        // 32 KiB
-//                        deferred.reject('File size limit of 32 KiB exceeded');
-//                    }
-                };
-
-                reader.onloadend = function (e) {
-                    if (e.total !== 0 && e.total === e.loaded) {
-                        GUI.log('Loaded file ' + path);
-
-                        deferred.resolve(e.target.result);
-                    } else {
-                        deferred.reject(new Error('Failed to load ' + path));
-                    }
-                };
-
-                reader.readAsText(file);
-            });
-        });
-    });
-
-    return deferred.promise;
-}
-
 function saveFile(str) {
     // Save file dialog
     chrome.fileSystem.chooseEntry({
@@ -109,35 +51,6 @@ function saveFile(str) {
             writer.truncate(0);
         });
     });
-}
-
-// Fills a memory image of ESC MCU's address space with target firmware
-function fillImage(data, size, flashOffset) {
-    var image = new Uint8Array(size).fill(0xFF);
-
-    data.data.forEach(function (block) {
-		let address = block.address - flashOffset;
-        // Check preconditions
-        if (address >= image.byteLength) {
-            // if (block.address == BLHELI_SILABS_BOOTLOADER_ADDRESS) {
-            //     GUI.log('Block at 0x' + block.address.toString(0x10) + ' of 0x' + block.bytes.toString(0x10) + ' bytes contains bootloader, skipping\n');
-            // } else {
-            //     GUI.log('Block at 0x' + block.address.toString(0x10) + ' is outside of target address space\n');
-            // }
-
-            return;
-        }
-
-        if (address + block.bytes >= image.byteLength) {}
-        // GUI.log('Block at 0x' + block.address.toString(0x10) + ' spans past the end of target address space\n');
-
-
-        // block.data may be too large, select maximum allowed size
-        var clamped_length = Math.min(block.bytes, image.byteLength - address);
-        image.set(block.data.slice(0, clamped_length), address);
-    });
-
-    return image;
 }
 
 // @todo add Local Storage quota management?

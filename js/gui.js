@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 var TABS = {}; // filled by individual tab js file
 
@@ -16,13 +16,13 @@ var GUI_control = function () {
         'landing',
         'make_interfaces',
         'select_interface',
-        'bluejay_flash'
+        'detect_esc'
     ];
     this.defaultAllowedTabsWhenConnected = [
         'esc',
         'make_interfaces',
         'select_interface',
-        'bluejay_flash'
+        'detect_esc'
     ];
     this.allowedTabs = this.defaultAllowedTabsWhenDisconnected;
 

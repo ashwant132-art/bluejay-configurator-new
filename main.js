@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 const settings = require('./settings.json');
 const { ga } = settings;
 
@@ -199,8 +199,8 @@ $(document).ready(function () {
                     case 'select_interface':
                         TABS.select_interface.initialize(content_ready);
                         break;
-                    case 'bluejay_flash':
-                        TABS.bluejay_flash.initialize(content_ready);
+                    case 'detect_esc':
+                        TABS.detect_esc.initialize(content_ready);
                         break;
                     case 'esc':
                         if (!TABS.esc) {

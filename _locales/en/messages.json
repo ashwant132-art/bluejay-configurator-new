@@ -64,8 +64,8 @@
     "tabSelectInterface": {
         "message": "Select Interface"
     },
-    "tabBluejayFlash": {
-        "message": "Bluejay Flash"
+    "tabDetectEsc": {
+        "message": "Detect ESC Layout"
     },
     "tabESC": {
         "message": "ESC Programming"
@@ -169,7 +169,7 @@
         "message": "Disclaimer"
     },
     "defaultWelcomeText": {
-        "message": "The application supports ESCs running BLHeli for Atmel, BLHeli for SiLabs and BLHeli_S.</br><strong>BLHeli FC passthrough</strong> is the only interface currently supported.<br /></br>Should you run into any problems, make sure to use the <strong>Save Debug Log</strong> button and submit a new issue via <a href=\"https://github.com/mathiasvr/bluejay-configurator/issues/new\" title=\"https://github.com\" target=\"_blank\">GitHub</a>.<br /><br/>Application source code can be downloaded from <a href=\"https://github.com/mathiasvr/bluejay-configurator\" title=\"https://www.github.com\" target=\"_blank\">here</a><br /><br />Latest <a href=\"https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers\" title=\"http://www.silabs.com\" target=\"_blank\">CP210x Drivers</a> can be downloaded from <a href=\"https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers\" title=\"http://www.silabs.com\" target=\"_blank\">here</a><br />Latest <a href=\"https://www.st.com/en/development-tools/stsw-stm32102.html\" title=\"http://www.st.com\" target=\"_blank\">STM USB VCP Drivers</a> can be downloaded from <a href=\"https://www.st.com/en/development-tools/stsw-stm32102.html\" title=\"http://www.st.com\" target=\"_blank\">here</a><br />"
+        "message": "This application supports ESCs running Bluejay firmware only.<br /></br>Should you run into any problems, make sure to use the <strong>Save Debug Log</strong> button and submit a new issue via <a href=\"https://github.com/mathiasvr/bluejay-configurator/issues/new\" title=\"https://github.com\" target=\"_blank\">GitHub</a>.<br />"
     },
     "defaultContributingHead": {
         "message": "Contributing"

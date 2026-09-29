@@ -178,12 +178,6 @@ TABS.make_interfaces.initialize = function (callback) {
             MAKE_INTERFACES.docsFiles.forEach(function (f) {
                 $docs.append('<li><code>' + MAKE_INTERFACES.docsDir + '/' + f + '</code></li>');
             });
-            var $shot = $('#mi-shot');
-            $shot.empty();
-            MAKE_INTERFACES.screenshotsFiles.forEach(function (f) {
-                $shot.append('<div class="note">Reference: <code>' + MAKE_INTERFACES.screenshotsDir + '/' + f + '</code></div>');
-                $shot.append('<img src="./' + MAKE_INTERFACES.screenshotsDir + '/' + f + '" alt="SiLabs setup reference" style="max-width:100%;border:1px solid #ccc;" />');
-            });
         }
 
         $family.on('change', refreshFamily);
