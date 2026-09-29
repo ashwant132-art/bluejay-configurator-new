@@ -1,7 +1,7 @@
 'use strict';
 
 TABS.bluejay_flash = {};
-TABS.bluejay_flash.loaded = null; // { url, text, parsed, layout, version } after Load Firmware (Online)
+TABS.bluejay_flash.detected = null; // { layout, mcu, name, mainRev, subRev, layoutRev } after Detect
 
 // Read raw EEPROM image over the 4-way link. Resolves Uint8Array or throws.
 function bjFlashReadEeprom(offset, length) {
@@ -46,77 +46,8 @@ TABS.bluejay_flash.initialize = function (callback) {
     $('#content').load('./tabs/bluejay_flash.html', function () {
         localize();
 
-        var bjVersionsCache = [];
-        var bjLayoutsCache = {};
-
         function log(msg) {
             GUI.log('BluejayFlash: ' + msg);
-        }
-
-        // Strictly local: version/layout lists come from the shipped
-        // js/bluejay_versions.json + js/bluejay_escs.json only (no remote
-        // override), so the bird-sanctuary URLs in our files are what you get.
-        function fetchLocalJson(localUrl) {
-            return fetch(localUrl).then(function (response) {
-                if (!response.ok) {
-                    throw new Error(response.statusText);
-                }
-                return response.json();
-            });
-        }
-
-        function refreshBluejayPickers() {
-            var $ver = $('#bj-version');
-            var $lay = $('#bj-layout');
-            $ver.empty();
-            $lay.empty();
-            $ver.append($('<option/>', { value: '', text: 'loading...' }));
-            $lay.append($('<option/>', { value: '', text: 'loading...' }));
-            fetchLocalJson(BLUEJAY_VERSIONS_LOCAL).then(function (json) {
-                bjVersionsCache = (json && json.EFM8) || [];
-                $ver.empty();
-                bjVersionsCache.forEach(function (v) {
-                    $ver.append($('<option/>', { value: v.key, text: v.name }));
-                });
-                refreshBluejayUrl();
-            }).catch(function () {
-                $ver.empty();
-            });
-            fetchLocalJson(BLUEJAY_ESCS_LOCAL).then(function (json) {
-                bjLayoutsCache = (json && json.layouts && json.layouts.EFM8) || {};
-                $lay.empty();
-                Object.keys(bjLayoutsCache).sort().forEach(function (k) {
-                    var clean = k.replace(/#/g, '');
-                    $lay.append($('<option/>', { value: clean, text: clean + ' (' + bjLayoutsCache[k].name + ')' }));
-                });
-                if (bjLayoutsCache['#J_L_30#']) {
-                    $lay.val('J_L_30');
-                }
-                refreshBluejayUrl();
-            }).catch(function () {
-                $lay.empty();
-            });
-            refreshBluejayUrl();
-        }
-
-        function bluejayVersionEntry() {
-            var key = $('#bj-version').val();
-            var found = null;
-            (bjVersionsCache || []).forEach(function (v) {
-                if (v.key === key) {
-                    found = v;
-                }
-            });
-            return found;
-        }
-
-        function refreshBluejayUrl() {
-            var base = $('#bj-layout').val() || 'J_L_30';
-            var suffix = ($('#bj-suffix').val() || '').trim();
-            if (suffix) {
-                base = base + '_' + suffix;
-            }
-            $('#bj-url').val(makeInterfacesBluejayUrl(bluejayVersionEntry(), base));
         }
 
         function setCheckRow(name, state, detail) {
@@ -140,50 +71,9 @@ TABS.bluejay_flash.initialize = function (callback) {
             }
         }
 
-        $('#bj-version').on('change', refreshBluejayUrl);
-        $('#bj-layout').on('change', refreshBluejayUrl);
-        $('#bj-suffix').on('input change', refreshBluejayUrl);
-
-        $('#bj-copy').on('click', function (e) {
-            e.preventDefault();
-            refreshBluejayUrl();
-            $('#bj-url').select();
-            try {
-                document.execCommand('copy');
-                log('URL copied');
-            } catch (err) {
-                log('copy failed — select the URL manually');
-            }
-        });
-
-        $('#bj-download').on('click', function (e) {
-            e.preventDefault();
-            refreshBluejayUrl();
-            var url = $('#bj-url').val();
-            var entry = bluejayVersionEntry();
-            var base = ($('#bj-layout').val() || '') + (($('#bj-suffix').val() || '').trim() ? '_' + ($('#bj-suffix').val() || '').trim() : '');
-            if (!url || !entry) {
-                log('pick a version + layout first');
-                return;
-            }
-            var cacheKey = 'bj_' + entry.key + '_' + base;
-            $('#bj-loaded').html('loading <code>' + url + '</code> ...');
-            getFromCache(cacheKey, url).then(function (text) {
-                if (!text || text.charAt(0) !== ':') {
-                    throw new Error('not an Intel HEX file (bad content at ' + url + ')');
-                }
-                return parseHex(text).then(function (parsed) {
-                    TABS.bluejay_flash.loaded = { url: url, text: text, parsed: parsed, layout: $('#bj-layout').val(), version: entry.key };
-                    var blocks = (parsed && parsed.data) ? parsed.data.length : 0;
-                    $('#bj-loaded').html('loaded <code>' + base + '_v' + entry.key + '.hex</code> — ' +
-                        text.split('\n').length + ' lines, ' + blocks + ' blocks. Held in memory for the flash step.');
-                    log('firmware loaded online: <code>' + url + '</code>');
-                });
-            }).catch(function (err) {
-                $('#bj-loaded').html('load failed: ' + err.message);
-                log('online load failed: ' + err.message);
-            });
-        });
+        function isDeprecatedLayout(layout) {
+            return !!layout && layout.toUpperCase().indexOf('L_') === 0;
+        }
 
         $('#bj-detect').on('click', function (e) {
             e.preventDefault();
@@ -195,33 +85,24 @@ TABS.bluejay_flash.initialize = function (callback) {
             }
             $('#bj-detect-out').html('reading ESC EEPROM...');
             bjFlashReadEeprom(BLHELI_SILABS_EEPROM_OFFSET, BLHELI_LAYOUT_SIZE).then(function (img) {
-                var layout = bjFlashAscii(img.subarray(BLHELI_LAYOUT.LAYOUT.offset, BLHELI_LAYOUT.LAYOUT.offset + BLHELI_LAYOUT.LAYOUT.size));
+                var layout = bjFlashAscii(img.subarray(BLHELI_LAYOUT.LAYOUT.offset, BLHELI_LAYOUT.LAYOUT.offset + BLHELI_LAYOUT.LAYOUT.size)).trim();
                 var mcu = bjFlashAscii(img.subarray(BLHELI_LAYOUT.MCU.offset, BLHELI_LAYOUT.MCU.offset + BLHELI_LAYOUT.MCU.size));
                 var name = bjFlashAscii(img.subarray(BLHELI_LAYOUT.NAME.offset, BLHELI_LAYOUT.NAME.offset + BLHELI_LAYOUT.NAME.size));
                 var mainRev = img[BLHELI_LAYOUT.MAIN_REVISION.offset];
                 var subRev = img[BLHELI_LAYOUT.SUB_REVISION.offset];
                 var layoutRev = img[BLHELI_LAYOUT.LAYOUT_REVISION.offset];
+                TABS.bluejay_flash.detected = { layout: layout, mcu: mcu, name: name, mainRev: mainRev, subRev: subRev, layoutRev: layoutRev };
+                var extra = isDeprecatedLayout(layout)
+                    ? '<p>L layout (BB10) is deprecated upstream — cap firmware at <code>0.18.1</code>.</p>'
+                    : '';
                 $('#bj-detect-out').html(
                     '<p><strong>LAYOUT:</strong> <code>' + layout + '</code> ' +
                     '<strong>MCU:</strong> <code>' + mcu + '</code> ' +
                     '<strong>NAME:</strong> <code>' + name + '</code></p>' +
-                    '<p><strong>MAIN/SUB/LAYOUT rev:</strong> <code>' + mainRev + ' / ' + subRev + ' / ' + layoutRev + '</code></p>'
+                    '<p><strong>MAIN/SUB/LAYOUT rev:</strong> <code>' + mainRev + ' / ' + subRev + ' / ' + layoutRev + '</code></p>' +
+                    extra
                 );
-                // Preselect matching layout picker entry when the ESC names one we know
-                var guess = null;
-                Object.keys(bjLayoutsCache).forEach(function (k) {
-                    var clean = k.replace(/#/g, '');
-                    if (layout && clean.indexOf(layout.trim()) === 0) {
-                        guess = clean;
-                    }
-                });
-                if (guess) {
-                    $('#bj-layout').val(guess);
-                    refreshBluejayUrl();
-                    log('layout picker set to <code>' + guess + '</code> from ESC');
-                } else {
-                    log('ESC reports LAYOUT=<code>' + layout + '</code> — no exact picker match, check manually');
-                }
+                log('detected LAYOUT=<code>' + layout + '</code> MCU=<code>' + mcu + '</code>');
             }).catch(function (err) {
                 $('#bj-detect-out').html('detect failed: ' + err.message);
             });
@@ -264,7 +145,8 @@ TABS.bluejay_flash.initialize = function (callback) {
                 setCheckRow('EEPROM readable', 'SKIP', 'no link');
                 setCheckRow('Layout revision', 'SKIP', 'no link');
                 setCheckRow('MCU / NAME present', 'SKIP', 'no link');
-                setCheckRow('Layout matches picker', 'SKIP', 'no link');
+                setCheckRow('ESC layout', 'SKIP', 'no link');
+                setCheckRow('Bootloader present', 'SKIP', 'no link');
                 return;
             }
             _4way.testAlive().then(function () {
@@ -286,11 +168,12 @@ TABS.bluejay_flash.initialize = function (callback) {
                     setCheckRow('MCU / NAME present', 'WARN', 'blank strings — EEPROM may be erased or unreadable');
                 }
                 var layout = bjFlashAscii(img.subarray(BLHELI_LAYOUT.LAYOUT.offset, BLHELI_LAYOUT.LAYOUT.offset + BLHELI_LAYOUT.LAYOUT.size)).trim();
-                var picked = ($('#bj-layout').val() || '').trim();
-                if (layout && picked && picked.indexOf(layout) === 0) {
-                    setCheckRow('Layout matches picker', 'PASS', 'ESC=<code>' + layout + '</code> picker=<code>' + picked + '</code>');
+                if (!layout) {
+                    setCheckRow('ESC layout', 'WARN', 'blank LAYOUT — EEPROM may be erased');
+                } else if (isDeprecatedLayout(layout)) {
+                    setCheckRow('ESC layout', 'WARN', 'ESC=<code>' + layout + '</code> — L/BB10 deprecated upstream, cap firmware at <code>0.18.1</code>');
                 } else {
-                    setCheckRow('Layout matches picker', 'WARN', 'ESC=<code>' + (layout || '?') + '</code> picker=<code>' + (picked || '?') + '</code> — confirm before flashing');
+                    setCheckRow('ESC layout', 'PASS', 'ESC=<code>' + layout + '</code>');
                 }
                 // 6. bootloader region sanity: first bytes of bootloader area should not be all 0xFF on a flashed ESC
                 return bjFlashReadEeprom(BLHELI_SILABS_BOOTLOADER_ADDRESS, 16).then(function (bl) {
@@ -307,8 +190,6 @@ TABS.bluejay_flash.initialize = function (callback) {
                 setCheckRow('Link', 'FAIL', err.message);
             });
         });
-
-        refreshBluejayPickers();
 
         // Show which interface every check below will run through.
         try {
